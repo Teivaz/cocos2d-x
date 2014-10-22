@@ -218,7 +218,7 @@ protected:
     uint32_t _vertexAttribsFlags;
     GLProgram *_glprogram;
     
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
     EventListenerCustom* _backToForegroundlistener;
 #endif
 };

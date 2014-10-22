@@ -127,14 +127,14 @@ void UniformValue::setCallback(const std::function<void(GLProgram*, Uniform*)> &
 
 void UniformValue::setFloat(float value)
 {
-    CCASSERT (_uniform->type == GL_FLOAT, "");
+    CCASSERT (_uniform->type == GL_FLOAT, "Wrong type: expecting GL_FLOAT");
     _value.floatValue = value;
     _useCallback = false;
 }
 
 void UniformValue::setTexture(GLuint textureId, GLuint textureUnit)
 {
-    CCASSERT(_uniform->type == GL_SAMPLER_2D, "Wrong type. expecting GL_SAMPLER_2D");
+    CCASSERT(_uniform->type == GL_SAMPLER_2D, "Wrong type: expecting GL_SAMPLER_2D");
     _value.tex.textureId = textureId;
     _value.tex.textureUnit = textureUnit;
     _useCallback = false;
@@ -148,28 +148,28 @@ void UniformValue::setInt(int value)
 
 void UniformValue::setVec2(const Vec2& value)
 {
-    CCASSERT (_uniform->type == GL_FLOAT_VEC2, "");
+    CCASSERT (_uniform->type == GL_FLOAT_VEC2, "Wrong type: expecting GL_FLOAT_VEC2");
 	memcpy(_value.v2Value, &value, sizeof(_value.v2Value));
     _useCallback = false;
 }
 
 void UniformValue::setVec3(const Vec3& value)
 {
-    CCASSERT (_uniform->type == GL_FLOAT_VEC3, "");
+    CCASSERT (_uniform->type == GL_FLOAT_VEC3, "Wrong type: expecting GL_FLOAT_VEC3");
 	memcpy(_value.v3Value, &value, sizeof(_value.v3Value));
 	_useCallback = false;
 }
 
 void UniformValue::setVec4(const Vec4& value)
 {
-    CCASSERT (_uniform->type == GL_FLOAT_VEC4, "");
+    CCASSERT (_uniform->type == GL_FLOAT_VEC4, "Wrong type: expecting GL_FLOAT_VEC4");
 	memcpy(_value.v4Value, &value, sizeof(_value.v4Value));
 	_useCallback = false;
 }
 
 void UniformValue::setMat4(const Mat4& value)
 {
-    CCASSERT(_uniform->type == GL_FLOAT_MAT4, "");
+    CCASSERT(_uniform->type == GL_FLOAT_MAT4, "Wrong type: expecting GL_FLOAT_MAT4");
 	memcpy(_value.matrixValue, &value, sizeof(_value.matrixValue));
 	_useCallback = false;
 }
@@ -278,7 +278,7 @@ GLProgramState::GLProgramState()
 , _textureUnitIndex(1)
 , _uniformAttributeValueDirty(true)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
     /** listen the event that renderer was recreated on Android/WP8 */
     CCLOG("create rendererRecreatedListener for GLProgramState");
     _backToForegroundlistener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom*) { _uniformAttributeValueDirty = true; });
@@ -288,7 +288,7 @@ GLProgramState::GLProgramState()
 
 GLProgramState::~GLProgramState()
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_WP8)
     Director::getInstance()->getEventDispatcher()->removeEventListener(_backToForegroundlistener);
 #endif
     
